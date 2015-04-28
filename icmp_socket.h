@@ -17,14 +17,14 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_ICMP_SOCKET_H_
-#define _NET_BATMAN_ADV_ICMP_SOCKET_H_
+#ifndef _NET_BATMAN_ADV14_ICMP_SOCKET_H_
+#define _NET_BATMAN_ADV14_ICMP_SOCKET_H_
 
 #define BATADV_ICMP_SOCKET "socket"
 
-void batadv_socket_init(void);
-int batadv_socket_setup(struct batadv_priv *bat_priv);
-void batadv_socket_receive_packet(struct batadv_icmp_packet_rr *icmp_packet,
+void batadv14_socket_init(void);
+int batadv14_socket_setup(struct batadv14_priv *bat_priv);
+void batadv14_socket_receive_packet(struct batadv14_icmp_packet_rr *icmp_packet,
 				  size_t icmp_len);
 
-#endif /* _NET_BATMAN_ADV_ICMP_SOCKET_H_ */
+#endif /* _NET_BATMAN_ADV14_ICMP_SOCKET_H_ */

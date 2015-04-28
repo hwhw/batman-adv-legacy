@@ -17,23 +17,23 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_GATEWAY_CLIENT_H_
-#define _NET_BATMAN_ADV_GATEWAY_CLIENT_H_
+#ifndef _NET_BATMAN_ADV14_GATEWAY_CLIENT_H_
+#define _NET_BATMAN_ADV14_GATEWAY_CLIENT_H_
 
-void batadv_gw_deselect(struct batadv_priv *bat_priv);
-void batadv_gw_election(struct batadv_priv *bat_priv);
-struct batadv_orig_node *
-batadv_gw_get_selected_orig(struct batadv_priv *bat_priv);
-void batadv_gw_check_election(struct batadv_priv *bat_priv,
-			      struct batadv_orig_node *orig_node);
-void batadv_gw_node_update(struct batadv_priv *bat_priv,
-			   struct batadv_orig_node *orig_node,
+void batadv14_gw_deselect(struct batadv14_priv *bat_priv);
+void batadv14_gw_election(struct batadv14_priv *bat_priv);
+struct batadv14_orig_node *
+batadv14_gw_get_selected_orig(struct batadv14_priv *bat_priv);
+void batadv14_gw_check_election(struct batadv14_priv *bat_priv,
+			      struct batadv14_orig_node *orig_node);
+void batadv14_gw_node_update(struct batadv14_priv *bat_priv,
+			   struct batadv14_orig_node *orig_node,
 			   uint8_t new_gwflags);
-void batadv_gw_node_delete(struct batadv_priv *bat_priv,
-			   struct batadv_orig_node *orig_node);
-void batadv_gw_node_purge(struct batadv_priv *bat_priv);
-int batadv_gw_client_seq_print_text(struct seq_file *seq, void *offset);
-bool batadv_gw_is_dhcp_target(struct sk_buff *skb, unsigned int *header_len);
-bool batadv_gw_out_of_range(struct batadv_priv *bat_priv, struct sk_buff *skb);
+void batadv14_gw_node_delete(struct batadv14_priv *bat_priv,
+			   struct batadv14_orig_node *orig_node);
+void batadv14_gw_node_purge(struct batadv14_priv *bat_priv);
+int batadv14_gw_client_seq_print_text(struct seq_file *seq, void *offset);
+bool batadv14_gw_is_dhcp_target(struct sk_buff *skb, unsigned int *header_len);
+bool batadv14_gw_out_of_range(struct batadv14_priv *bat_priv, struct sk_buff *skb);
 
-#endif /* _NET_BATMAN_ADV_GATEWAY_CLIENT_H_ */
+#endif /* _NET_BATMAN_ADV14_GATEWAY_CLIENT_H_ */

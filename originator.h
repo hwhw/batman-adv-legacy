@@ -17,35 +17,35 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_ORIGINATOR_H_
-#define _NET_BATMAN_ADV_ORIGINATOR_H_
+#ifndef _NET_BATMAN_ADV14_ORIGINATOR_H_
+#define _NET_BATMAN_ADV14_ORIGINATOR_H_
 
 #include "hash.h"
 
-int batadv_originator_init(struct batadv_priv *bat_priv);
-void batadv_originator_free(struct batadv_priv *bat_priv);
-void batadv_purge_orig_ref(struct batadv_priv *bat_priv);
-void batadv_orig_node_free_ref(struct batadv_orig_node *orig_node);
-void batadv_orig_node_free_ref_now(struct batadv_orig_node *orig_node);
-struct batadv_orig_node *batadv_get_orig_node(struct batadv_priv *bat_priv,
+int batadv14_originator_init(struct batadv14_priv *bat_priv);
+void batadv14_originator_free(struct batadv14_priv *bat_priv);
+void batadv14_purge_orig_ref(struct batadv14_priv *bat_priv);
+void batadv14_orig_node_free_ref(struct batadv14_orig_node *orig_node);
+void batadv14_orig_node_free_ref_now(struct batadv14_orig_node *orig_node);
+struct batadv14_orig_node *batadv14_get_orig_node(struct batadv14_priv *bat_priv,
 					      const uint8_t *addr);
-struct batadv_neigh_node *
-batadv_neigh_node_new(struct batadv_hard_iface *hard_iface,
+struct batadv14_neigh_node *
+batadv14_neigh_node_new(struct batadv14_hard_iface *hard_iface,
 		      const uint8_t *neigh_addr);
-void batadv_neigh_node_free_ref(struct batadv_neigh_node *neigh_node);
-struct batadv_neigh_node *
-batadv_orig_node_get_router(struct batadv_orig_node *orig_node);
-int batadv_orig_seq_print_text(struct seq_file *seq, void *offset);
-int batadv_orig_hash_add_if(struct batadv_hard_iface *hard_iface,
+void batadv14_neigh_node_free_ref(struct batadv14_neigh_node *neigh_node);
+struct batadv14_neigh_node *
+batadv14_orig_node_get_router(struct batadv14_orig_node *orig_node);
+int batadv14_orig_seq_print_text(struct seq_file *seq, void *offset);
+int batadv14_orig_hash_add_if(struct batadv14_hard_iface *hard_iface,
 			    int max_if_num);
-int batadv_orig_hash_del_if(struct batadv_hard_iface *hard_iface,
+int batadv14_orig_hash_del_if(struct batadv14_hard_iface *hard_iface,
 			    int max_if_num);
 
 
 /* hashfunction to choose an entry in a hash table of given size
  * hash algorithm from http://en.wikipedia.org/wiki/Hash_table
  */
-static inline uint32_t batadv_choose_orig(const void *data, uint32_t size)
+static inline uint32_t batadv14_choose_orig(const void *data, uint32_t size)
 {
 	const unsigned char *key = data;
 	uint32_t hash = 0;
@@ -64,23 +64,23 @@ static inline uint32_t batadv_choose_orig(const void *data, uint32_t size)
 	return hash % size;
 }
 
-static inline struct batadv_orig_node *
-batadv_orig_hash_find(struct batadv_priv *bat_priv, const void *data)
+static inline struct batadv14_orig_node *
+batadv14_orig_hash_find(struct batadv14_priv *bat_priv, const void *data)
 {
-	struct batadv_hashtable *hash = bat_priv->orig_hash;
+	struct batadv14_hashtable *hash = bat_priv->orig_hash;
 	struct hlist_head *head;
-	struct batadv_orig_node *orig_node, *orig_node_tmp = NULL;
+	struct batadv14_orig_node *orig_node, *orig_node_tmp = NULL;
 	int index;
 
 	if (!hash)
 		return NULL;
 
-	index = batadv_choose_orig(data, hash->size);
+	index = batadv14_choose_orig(data, hash->size);
 	head = &hash->table[index];
 
 	rcu_read_lock();
 	hlist_for_each_entry_rcu(orig_node, head, hash_entry) {
-		if (!batadv_compare_eth(orig_node, data))
+		if (!batadv14_compare_eth(orig_node, data))
 			continue;
 
 		if (!atomic_inc_not_zero(&orig_node->refcount))
@@ -94,4 +94,4 @@ batadv_orig_hash_find(struct batadv_priv *bat_priv, const void *data)
 	return orig_node_tmp;
 }
 
-#endif /* _NET_BATMAN_ADV_ORIGINATOR_H_ */
+#endif /* _NET_BATMAN_ADV14_ORIGINATOR_H_ */

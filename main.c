@@ -40,38 +40,38 @@
 /* List manipulations on hardif_list have to be rtnl_lock()'ed,
  * list traversals just rcu-locked
  */
-struct list_head batadv_hardif_list;
-static int (*batadv_rx_handler[256])(struct sk_buff *,
-				     struct batadv_hard_iface *);
-char batadv_routing_algo[20] = "BATMAN_IV";
-static struct hlist_head batadv_algo_list;
+struct list_head batadv14_hardif_list;
+static int (*batadv14_rx_handler[256])(struct sk_buff *,
+				     struct batadv14_hard_iface *);
+char batadv14_routing_algo[20] = "BATMAN_IV";
+static struct hlist_head batadv14_algo_list;
 
-unsigned char batadv_broadcast_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+unsigned char batadv14_broadcast_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-struct workqueue_struct *batadv_event_workqueue;
+struct workqueue_struct *batadv14_event_workqueue;
 
-static void batadv_recv_handler_init(void);
+static void batadv14_recv_handler_init(void);
 
-static int __init batadv_init(void)
+static int __init batadv14_init(void)
 {
-	INIT_LIST_HEAD(&batadv_hardif_list);
-	INIT_HLIST_HEAD(&batadv_algo_list);
+	INIT_LIST_HEAD(&batadv14_hardif_list);
+	INIT_HLIST_HEAD(&batadv14_algo_list);
 
-	batadv_recv_handler_init();
+	batadv14_recv_handler_init();
 
-	batadv_iv_init();
-	batadv_nc_init();
+	batadv14_iv_init();
+	batadv14_nc_init();
 
-	batadv_event_workqueue = create_singlethread_workqueue("bat_events");
+	batadv14_event_workqueue = create_singlethread_workqueue("bat_events");
 
-	if (!batadv_event_workqueue)
+	if (!batadv14_event_workqueue)
 		return -ENOMEM;
 
-	batadv_socket_init();
-	batadv_debugfs_init();
+	batadv14_socket_init();
+	batadv14_debugfs_init();
 
-	register_netdevice_notifier(&batadv_hard_if_notifier);
-	rtnl_link_register(&batadv_link_ops);
+	register_netdevice_notifier(&batadv14_hard_if_notifier);
+	rtnl_link_register(&batadv14_link_ops);
 
 	pr_info("B.A.T.M.A.N. advanced %s (compatibility version %i) loaded\n",
 		BATADV_SOURCE_VERSION, BATADV_COMPAT_VERSION);
@@ -79,23 +79,23 @@ static int __init batadv_init(void)
 	return 0;
 }
 
-static void __exit batadv_exit(void)
+static void __exit batadv14_exit(void)
 {
-	batadv_debugfs_destroy();
-	rtnl_link_unregister(&batadv_link_ops);
-	unregister_netdevice_notifier(&batadv_hard_if_notifier);
-	batadv_hardif_remove_interfaces();
+	batadv14_debugfs_destroy();
+	rtnl_link_unregister(&batadv14_link_ops);
+	unregister_netdevice_notifier(&batadv14_hard_if_notifier);
+	batadv14_hardif_remove_interfaces();
 
-	flush_workqueue(batadv_event_workqueue);
-	destroy_workqueue(batadv_event_workqueue);
-	batadv_event_workqueue = NULL;
+	flush_workqueue(batadv14_event_workqueue);
+	destroy_workqueue(batadv14_event_workqueue);
+	batadv14_event_workqueue = NULL;
 
 	rcu_barrier();
 }
 
-int batadv_mesh_init(struct net_device *soft_iface)
+int batadv14_mesh_init(struct net_device *soft_iface)
 {
-	struct batadv_priv *bat_priv = netdev_priv(soft_iface);
+	struct batadv14_priv *bat_priv = netdev_priv(soft_iface);
 	int ret;
 
 	spin_lock_init(&bat_priv->forw_bat_list_lock);
@@ -113,26 +113,26 @@ int batadv_mesh_init(struct net_device *soft_iface)
 	INIT_LIST_HEAD(&bat_priv->tt.req_list);
 	INIT_LIST_HEAD(&bat_priv->tt.roam_list);
 
-	ret = batadv_originator_init(bat_priv);
+	ret = batadv14_originator_init(bat_priv);
 	if (ret < 0)
 		goto err;
 
-	ret = batadv_tt_init(bat_priv);
+	ret = batadv14_tt_init(bat_priv);
 	if (ret < 0)
 		goto err;
 
-	batadv_tt_local_add(soft_iface, soft_iface->dev_addr,
+	batadv14_tt_local_add(soft_iface, soft_iface->dev_addr,
 			    BATADV_NULL_IFINDEX);
 
-	ret = batadv_bla_init(bat_priv);
+	ret = batadv14_bla_init(bat_priv);
 	if (ret < 0)
 		goto err;
 
-	ret = batadv_dat_init(bat_priv);
+	ret = batadv14_dat_init(bat_priv);
 	if (ret < 0)
 		goto err;
 
-	ret = batadv_nc_mesh_init(bat_priv);
+	ret = batadv14_nc_mesh_init(bat_priv);
 	if (ret < 0)
 		goto err;
 
@@ -142,35 +142,35 @@ int batadv_mesh_init(struct net_device *soft_iface)
 	return 0;
 
 err:
-	batadv_mesh_free(soft_iface);
+	batadv14_mesh_free(soft_iface);
 	return ret;
 }
 
-void batadv_mesh_free(struct net_device *soft_iface)
+void batadv14_mesh_free(struct net_device *soft_iface)
 {
-	struct batadv_priv *bat_priv = netdev_priv(soft_iface);
+	struct batadv14_priv *bat_priv = netdev_priv(soft_iface);
 
 	atomic_set(&bat_priv->mesh_state, BATADV_MESH_DEACTIVATING);
 
-	batadv_purge_outstanding_packets(bat_priv, NULL);
+	batadv14_purge_outstanding_packets(bat_priv, NULL);
 
-	batadv_gw_node_purge(bat_priv);
-	batadv_nc_mesh_free(bat_priv);
-	batadv_dat_free(bat_priv);
-	batadv_bla_free(bat_priv);
+	batadv14_gw_node_purge(bat_priv);
+	batadv14_nc_mesh_free(bat_priv);
+	batadv14_dat_free(bat_priv);
+	batadv14_bla_free(bat_priv);
 
 	/* Free the TT and the originator tables only after having terminated
 	 * all the other depending components which may use these structures for
 	 * their purposes.
 	 */
-	batadv_tt_free(bat_priv);
+	batadv14_tt_free(bat_priv);
 
 	/* Since the originator table clean up routine is accessing the TT
 	 * tables as well, it has to be invoked after the TT tables have been
 	 * freed and marked as empty. This ensures that no cleanup RCU callbacks
 	 * accessing the TT data are scheduled for later execution.
 	 */
-	batadv_originator_free(bat_priv);
+	batadv14_originator_free(bat_priv);
 
 	free_percpu(bat_priv->bat_counters);
 	bat_priv->bat_counters = NULL;
@@ -179,24 +179,24 @@ void batadv_mesh_free(struct net_device *soft_iface)
 }
 
 /**
- * batadv_is_my_mac - check if the given mac address belongs to any of the real
+ * batadv14_is_my_mac - check if the given mac address belongs to any of the real
  * interfaces in the current mesh
  * @bat_priv: the bat priv with all the soft interface information
  * @addr: the address to check
  */
-int batadv_is_my_mac(struct batadv_priv *bat_priv, const uint8_t *addr)
+int batadv14_is_my_mac(struct batadv14_priv *bat_priv, const uint8_t *addr)
 {
-	const struct batadv_hard_iface *hard_iface;
+	const struct batadv14_hard_iface *hard_iface;
 
 	rcu_read_lock();
-	list_for_each_entry_rcu(hard_iface, &batadv_hardif_list, list) {
+	list_for_each_entry_rcu(hard_iface, &batadv14_hardif_list, list) {
 		if (hard_iface->if_status != BATADV_IF_ACTIVE)
 			continue;
 
 		if (hard_iface->soft_iface != bat_priv->soft_iface)
 			continue;
 
-		if (batadv_compare_eth(hard_iface->net_dev->dev_addr, addr)) {
+		if (batadv14_compare_eth(hard_iface->net_dev->dev_addr, addr)) {
 			rcu_read_unlock();
 			return 1;
 		}
@@ -206,20 +206,20 @@ int batadv_is_my_mac(struct batadv_priv *bat_priv, const uint8_t *addr)
 }
 
 /**
- * batadv_seq_print_text_primary_if_get - called from debugfs table printing
+ * batadv14_seq_print_text_primary_if_get - called from debugfs table printing
  *  function that requires the primary interface
  * @seq: debugfs table seq_file struct
  *
  * Returns primary interface if found or NULL otherwise.
  */
-struct batadv_hard_iface *
-batadv_seq_print_text_primary_if_get(struct seq_file *seq)
+struct batadv14_hard_iface *
+batadv14_seq_print_text_primary_if_get(struct seq_file *seq)
 {
 	struct net_device *net_dev = (struct net_device *)seq->private;
-	struct batadv_priv *bat_priv = netdev_priv(net_dev);
-	struct batadv_hard_iface *primary_if;
+	struct batadv14_priv *bat_priv = netdev_priv(net_dev);
+	struct batadv14_hard_iface *primary_if;
 
-	primary_if = batadv_primary_if_get_selected(bat_priv);
+	primary_if = batadv14_primary_if_get_selected(bat_priv);
 
 	if (!primary_if) {
 		seq_printf(seq,
@@ -234,15 +234,15 @@ batadv_seq_print_text_primary_if_get(struct seq_file *seq)
 	seq_printf(seq,
 		   "BATMAN mesh %s disabled - primary interface not active\n",
 		   net_dev->name);
-	batadv_hardif_free_ref(primary_if);
+	batadv14_hardif_free_ref(primary_if);
 	primary_if = NULL;
 
 out:
 	return primary_if;
 }
 
-static int batadv_recv_unhandled_packet(struct sk_buff *skb,
-					struct batadv_hard_iface *recv_if)
+static int batadv14_recv_unhandled_packet(struct sk_buff *skb,
+					struct batadv14_hard_iface *recv_if)
 {
 	return NET_RX_DROP;
 }
@@ -250,18 +250,18 @@ static int batadv_recv_unhandled_packet(struct sk_buff *skb,
 /* incoming packets with the batman ethertype received on any active hard
  * interface
  */
-int batadv_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
+int batadv14_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
 			   struct packet_type *ptype,
 			   struct net_device *orig_dev)
 {
-	struct batadv_priv *bat_priv;
-	struct batadv_ogm_packet *batadv_ogm_packet;
-	struct batadv_hard_iface *hard_iface;
+	struct batadv14_priv *bat_priv;
+	struct batadv14_ogm_packet *batadv14_ogm_packet;
+	struct batadv14_hard_iface *hard_iface;
 	uint8_t idx;
 	int ret;
 
-	hard_iface = container_of(ptype, struct batadv_hard_iface,
-				  batman_adv_ptype);
+	hard_iface = container_of(ptype, struct batadv14_hard_iface,
+				  batman_adv14_ptype);
 	skb = skb_share_check(skb, GFP_ATOMIC);
 
 	/* skb was released by skb_share_check() */
@@ -288,20 +288,20 @@ int batadv_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
 	if (hard_iface->if_status != BATADV_IF_ACTIVE)
 		goto err_free;
 
-	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
+	batadv14_ogm_packet = (struct batadv14_ogm_packet *)skb->data;
 
-	if (batadv_ogm_packet->header.version != BATADV_COMPAT_VERSION) {
-		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
+	if (batadv14_ogm_packet->header.version != BATADV_COMPAT_VERSION) {
+		batadv14_dbg(BATADV_DBG_BATMAN, bat_priv,
 			   "Drop packet: incompatible batman version (%i)\n",
-			   batadv_ogm_packet->header.version);
+			   batadv14_ogm_packet->header.version);
 		goto err_free;
 	}
 
 	/* all receive handlers return whether they received or reused
 	 * the supplied skb. if not, we have to free the skb.
 	 */
-	idx = batadv_ogm_packet->header.packet_type;
-	ret = (*batadv_rx_handler[idx])(skb, hard_iface);
+	idx = batadv14_ogm_packet->header.packet_type;
+	ret = (*batadv14_rx_handler[idx])(skb, hard_iface);
 
 	if (ret == NET_RX_DROP)
 		kfree_skb(skb);
@@ -318,53 +318,53 @@ err_out:
 	return NET_RX_DROP;
 }
 
-static void batadv_recv_handler_init(void)
+static void batadv14_recv_handler_init(void)
 {
 	int i;
 
-	for (i = 0; i < ARRAY_SIZE(batadv_rx_handler); i++)
-		batadv_rx_handler[i] = batadv_recv_unhandled_packet;
+	for (i = 0; i < ARRAY_SIZE(batadv14_rx_handler); i++)
+		batadv14_rx_handler[i] = batadv14_recv_unhandled_packet;
 
 	/* batman icmp packet */
-	batadv_rx_handler[BATADV_ICMP] = batadv_recv_icmp_packet;
+	batadv14_rx_handler[BATADV_ICMP] = batadv14_recv_icmp_packet;
 	/* unicast with 4 addresses packet */
-	batadv_rx_handler[BATADV_UNICAST_4ADDR] = batadv_recv_unicast_packet;
+	batadv14_rx_handler[BATADV_UNICAST_4ADDR] = batadv14_recv_unicast_packet;
 	/* unicast packet */
-	batadv_rx_handler[BATADV_UNICAST] = batadv_recv_unicast_packet;
+	batadv14_rx_handler[BATADV_UNICAST] = batadv14_recv_unicast_packet;
 	/* fragmented unicast packet */
-	batadv_rx_handler[BATADV_UNICAST_FRAG] = batadv_recv_ucast_frag_packet;
+	batadv14_rx_handler[BATADV_UNICAST_FRAG] = batadv14_recv_ucast_frag_packet;
 	/* broadcast packet */
-	batadv_rx_handler[BATADV_BCAST] = batadv_recv_bcast_packet;
+	batadv14_rx_handler[BATADV_BCAST] = batadv14_recv_bcast_packet;
 	/* vis packet */
-	batadv_rx_handler[BATADV_VIS] = batadv_recv_vis_packet;
+	batadv14_rx_handler[BATADV_VIS] = batadv14_recv_vis_packet;
 	/* Translation table query (request or response) */
-	batadv_rx_handler[BATADV_TT_QUERY] = batadv_recv_tt_query;
+	batadv14_rx_handler[BATADV_TT_QUERY] = batadv14_recv_tt_query;
 	/* Roaming advertisement */
-	batadv_rx_handler[BATADV_ROAM_ADV] = batadv_recv_roam_adv;
+	batadv14_rx_handler[BATADV_ROAM_ADV] = batadv14_recv_roam_adv;
 }
 
 int
-batadv_recv_handler_register(uint8_t packet_type,
+batadv14_recv_handler_register(uint8_t packet_type,
 			     int (*recv_handler)(struct sk_buff *,
-						 struct batadv_hard_iface *))
+						 struct batadv14_hard_iface *))
 {
-	if (batadv_rx_handler[packet_type] != &batadv_recv_unhandled_packet)
+	if (batadv14_rx_handler[packet_type] != &batadv14_recv_unhandled_packet)
 		return -EBUSY;
 
-	batadv_rx_handler[packet_type] = recv_handler;
+	batadv14_rx_handler[packet_type] = recv_handler;
 	return 0;
 }
 
-void batadv_recv_handler_unregister(uint8_t packet_type)
+void batadv14_recv_handler_unregister(uint8_t packet_type)
 {
-	batadv_rx_handler[packet_type] = batadv_recv_unhandled_packet;
+	batadv14_rx_handler[packet_type] = batadv14_recv_unhandled_packet;
 }
 
-static struct batadv_algo_ops *batadv_algo_get(char *name)
+static struct batadv14_algo_ops *batadv14_algo_get(char *name)
 {
-	struct batadv_algo_ops *bat_algo_ops = NULL, *bat_algo_ops_tmp;
+	struct batadv14_algo_ops *bat_algo_ops = NULL, *bat_algo_ops_tmp;
 
-	hlist_for_each_entry(bat_algo_ops_tmp, &batadv_algo_list, list) {
+	hlist_for_each_entry(bat_algo_ops_tmp, &batadv14_algo_list, list) {
 		if (strcmp(bat_algo_ops_tmp->name, name) != 0)
 			continue;
 
@@ -375,12 +375,12 @@ static struct batadv_algo_ops *batadv_algo_get(char *name)
 	return bat_algo_ops;
 }
 
-int batadv_algo_register(struct batadv_algo_ops *bat_algo_ops)
+int batadv14_algo_register(struct batadv14_algo_ops *bat_algo_ops)
 {
-	struct batadv_algo_ops *bat_algo_ops_tmp;
+	struct batadv14_algo_ops *bat_algo_ops_tmp;
 	int ret;
 
-	bat_algo_ops_tmp = batadv_algo_get(bat_algo_ops->name);
+	bat_algo_ops_tmp = batadv14_algo_get(bat_algo_ops->name);
 	if (bat_algo_ops_tmp) {
 		pr_info("Trying to register already registered routing algorithm: %s\n",
 			bat_algo_ops->name);
@@ -402,19 +402,19 @@ int batadv_algo_register(struct batadv_algo_ops *bat_algo_ops)
 	}
 
 	INIT_HLIST_NODE(&bat_algo_ops->list);
-	hlist_add_head(&bat_algo_ops->list, &batadv_algo_list);
+	hlist_add_head(&bat_algo_ops->list, &batadv14_algo_list);
 	ret = 0;
 
 out:
 	return ret;
 }
 
-int batadv_algo_select(struct batadv_priv *bat_priv, char *name)
+int batadv14_algo_select(struct batadv14_priv *bat_priv, char *name)
 {
-	struct batadv_algo_ops *bat_algo_ops;
+	struct batadv14_algo_ops *bat_algo_ops;
 	int ret = -EINVAL;
 
-	bat_algo_ops = batadv_algo_get(name);
+	bat_algo_ops = batadv14_algo_get(name);
 	if (!bat_algo_ops)
 		goto out;
 
@@ -425,13 +425,13 @@ out:
 	return ret;
 }
 
-int batadv_algo_seq_print_text(struct seq_file *seq, void *offset)
+int batadv14_algo_seq_print_text(struct seq_file *seq, void *offset)
 {
-	struct batadv_algo_ops *bat_algo_ops;
+	struct batadv14_algo_ops *bat_algo_ops;
 
 	seq_puts(seq, "Available routing algorithms:\n");
 
-	hlist_for_each_entry(bat_algo_ops, &batadv_algo_list, list) {
+	hlist_for_each_entry(bat_algo_ops, &batadv14_algo_list, list) {
 		seq_printf(seq, "%s\n", bat_algo_ops->name);
 	}
 
@@ -439,7 +439,7 @@ int batadv_algo_seq_print_text(struct seq_file *seq, void *offset)
 }
 
 /**
- * batadv_skb_crc32 - calculate CRC32 of the whole packet and skip bytes in
+ * batadv14_skb_crc32 - calculate CRC32 of the whole packet and skip bytes in
  *  the header
  * @skb: skb pointing to fragmented socket buffers
  * @payload_ptr: Pointer to position inside the head buffer of the skb
@@ -448,7 +448,7 @@ int batadv_algo_seq_print_text(struct seq_file *seq, void *offset)
  * payload_ptr must always point to an address in the skb head buffer and not to
  * a fragment.
  */
-__be32 batadv_skb_crc32(struct sk_buff *skb, u8 *payload_ptr)
+__be32 batadv14_skb_crc32(struct sk_buff *skb, u8 *payload_ptr)
 {
 	u32 crc = 0;
 	unsigned int from;
@@ -469,16 +469,16 @@ __be32 batadv_skb_crc32(struct sk_buff *skb, u8 *payload_ptr)
 	return htonl(crc);
 }
 
-static int batadv_param_set_ra(const char *val, const struct kernel_param *kp)
+static int batadv14_param_set_ra(const char *val, const struct kernel_param *kp)
 {
-	struct batadv_algo_ops *bat_algo_ops;
+	struct batadv14_algo_ops *bat_algo_ops;
 	char *algo_name = (char *)val;
 	size_t name_len = strlen(algo_name);
 
 	if (name_len > 0 && algo_name[name_len - 1] == '\n')
 		algo_name[name_len - 1] = '\0';
 
-	bat_algo_ops = batadv_algo_get(algo_name);
+	bat_algo_ops = batadv14_algo_get(algo_name);
 	if (!bat_algo_ops) {
 		pr_err("Routing algorithm '%s' is not supported\n", algo_name);
 		return -EINVAL;
@@ -487,20 +487,20 @@ static int batadv_param_set_ra(const char *val, const struct kernel_param *kp)
 	return param_set_copystring(algo_name, kp);
 }
 
-static const struct kernel_param_ops batadv_param_ops_ra = {
-	.set = batadv_param_set_ra,
+static const struct kernel_param_ops batadv14_param_ops_ra = {
+	.set = batadv14_param_set_ra,
 	.get = param_get_string,
 };
 
-static struct kparam_string batadv_param_string_ra = {
-	.maxlen = sizeof(batadv_routing_algo),
-	.string = batadv_routing_algo,
+static struct kparam_string batadv14_param_string_ra = {
+	.maxlen = sizeof(batadv14_routing_algo),
+	.string = batadv14_routing_algo,
 };
 
-module_param_cb(routing_algo, &batadv_param_ops_ra, &batadv_param_string_ra,
+module_param_cb(routing_algo, &batadv14_param_ops_ra, &batadv14_param_string_ra,
 		0644);
-module_init(batadv_init);
-module_exit(batadv_exit);
+module_init(batadv14_init);
+module_exit(batadv14_exit);
 
 MODULE_LICENSE("GPL");
 

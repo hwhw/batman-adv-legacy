@@ -1,4 +1,4 @@
-batman-adv 2013.4.0
+batman-adv14 2013.4.0
 
  * support latest kernels (2.6.29 - 3.12)
  * bugs squashed:
@@ -9,7 +9,7 @@ batman-adv 2013.4.0
 
  -- Sun, 13 Oct 2013 18:50:11 +0200
 
-batman-adv 2013.3.0:
+batman-adv14 2013.3.0:
 
  * support latest kernels (2.6.29 - 3.11)
  * send each broadcast only once on non-wireless interfaces
@@ -24,7 +24,7 @@ batman-adv 2013.3.0:
 
  -- Sat, 20 Jul 2013 22:06:46 +0200
 
-batman-adv 2013.2.0:
+batman-adv14 2013.2.0:
 
  * support latest kernels (2.6.29 - 3.10)
  * add network coding feature
@@ -38,7 +38,7 @@ batman-adv 2013.2.0:
 
  -- Sat, 20 Apr 2013 16:42:51 +0200
 
-batman-adv 2013.1.0:
+batman-adv14 2013.1.0:
 
  * support latest kernels (2.6.29 - 3.9)
  * add lots of kerneldoc in types.h
@@ -55,7 +55,7 @@ batman-adv 2013.1.0:
 
  -- Sat, 02 Mar 2013 16:02:00 +0100
 
-batman-adv 2013.0.0:
+batman-adv14 2013.0.0:
 
 * support latest kernels (2.6.29 - 3.8)
 * cleanup of coding style and add kerneldoc
@@ -77,7 +77,7 @@ batman-adv 2013.0.0:
 
  -- Sat, 12 Jan 2013 12:00:16 +0100
 
-batman-adv 2012.4.0:
+batman-adv14 2012.4.0:
 
 * support latest kernels (2.6.29 - 3.7)
 * cleanup of coding style
@@ -96,10 +96,10 @@ batman-adv 2012.4.0:
 
  -- Mon, 29 Oct 2012 16:47:05 +0100
 
-batman-adv 2012.3.0:
+batman-adv14 2012.3.0:
 
 * support latest kernels (2.6.29 - 3.6)
-* added namespace-like prefix for all batman-adv symbols
+* added namespace-like prefix for all batman-adv14 symbols
 * integrated extended statistic support using ethtool
 * important bugs fixed
   - correct endianness for translation table crc
@@ -114,7 +114,7 @@ batman-adv 2012.3.0:
 
  -- Sun, 19 Aug 2012 21:28:23 +0200
 
-batman-adv 2012.2.0:
+batman-adv14 2012.2.0:
 
 * support latest kernels (2.6.29 - 3.5)
 * cleanup of coding style (use of named constants instead of values, refactored
@@ -129,7 +129,7 @@ batman-adv 2012.2.0:
 
  -- Tue, 12 Jun 2012 18:21:54 +0200
 
-batman-adv 2012.1.0:
+batman-adv14 2012.1.0:
 
 * support latest kernels (2.6.29 - 3.4)
 * makefile rewrite (install target, cleanups, new selection system for features)
@@ -141,7 +141,7 @@ batman-adv 2012.1.0:
 
  -- Fri, 30 Mar 2012 19:31:12 +0300
 
-batman-adv 2012.0.0:
+batman-adv14 2012.0.0:
 
 * support latest kernels (2.6.29 - 3.3)
 * Fix bat_socket_read memory corruption (CVE-2011-4604)
@@ -152,7 +152,7 @@ batman-adv 2012.0.0:
 
  -- Sun, 05 Feb 2012 15:06:08 +0100
 
-batman-adv 2011.4.0:
+batman-adv14 2011.4.0:
 
 * support latest kernels (2.6.29 - 3.2)
 * starting of code refactoring to support multiple protocol versions
@@ -163,7 +163,7 @@ batman-adv 2011.4.0:
 
  -- Sun, 13 Nov 2011 20:40:05 +0100
 
-batman-adv 2011.3.1:
+batman-adv14 2011.3.1:
 
 * don't send all packets to selected gateway as broadcast
 * prevent translation table corruptions caused by unintialized memory and
@@ -171,7 +171,7 @@ batman-adv 2011.3.1:
 
  -- Tue, 18 Oct 2011 20:40:59 +0200
 
-batman-adv 2011.3.0:
+batman-adv14 2011.3.0:
 
 * support latest kernels (2.6.29 - 3.1)
 * remove compat code for < 2.6.29
@@ -184,7 +184,7 @@ batman-adv 2011.3.0:
 
  -- Sun, 21 Aug 2011 14:49:20 +0200
 
-batman-adv 2011.2.0:
+batman-adv14 2011.2.0:
 
 * support latest kernels (2.6.21 - 3.0)
 * cleanup of coding style
@@ -196,7 +196,7 @@ batman-adv 2011.2.0:
 
  -- Sun, 19 Jun 2011 20:07:47 +0200
 
-batman-adv 2011.1.0:
+batman-adv14 2011.1.0:
 
 * support latest kernels (2.6.21 - 2.6.39)
 * cleanup of coding style
@@ -206,20 +206,20 @@ batman-adv 2011.1.0:
 
  -- Sun, 17 Apr 2011 17:41:53 +0200
 
-batman-adv 2011.0.0:
+batman-adv14 2011.0.0:
 
 * support latest kernels (2.6.21 - 2.6.38)
 * conversion of reference counting to kref
 * allow merging and refragmentation of unicast packets during transfers
 * add softif bridge loop detection
 * make hop_penalty configurable through sysfs
-* reimplement most of the batman-adv hash functionality
+* reimplement most of the batman-adv14 hash functionality
 * support for optimized DHCP based gateway selection
 * cleanup of the sysfs code
 
  -- Sat, 29 Jan 2011 20:08:05 +0100
 
-batman-adv 2010.2.0:
+batman-adv14 2010.2.0:
 
 * support latest kernels (2.6.21 - 2.6.37)
 * further cleanup of coding style
@@ -232,7 +232,7 @@ batman-adv 2010.2.0:
 
  -- Sun, 21 Nov 2010 21:02:40 +0100
 
-batman-adv 2010.1.0:
+batman-adv14 2010.1.0:
 
 * support latest kernels (2.6.21 - 2.6.36)
 * further cleanup of coding style
@@ -248,7 +248,7 @@ batman-adv 2010.1.0:
 
  -- Sat, 04 Sep 2010 13:56:38 +0200
 
-batman-adv 2010.0.0:
+batman-adv14 2010.0.0:
 
 * support latest kernels (2.6.21 - 2.6.35)
 * further code refactoring and cleaning for coding style
@@ -260,7 +260,7 @@ batman-adv 2010.0.0:
 
  -- Fri, 18 Jun 2010 21:34:26 +0200
 
-batman-adv 0.2.1:
+batman-adv14 0.2.1:
 
 * support latest kernels (2.6.20 - 2.6.33)
 * receive packets directly using skbs, remove old sockets and threads
@@ -274,7 +274,7 @@ batman-adv 0.2.1:
 
  -- Sun, 21 Mar 2010 20:46:47 +0100
 
-batman-adv 0.2:
+batman-adv14 0.2:
 
 * support latest kernels (2.6.20 - 2.6.31)
 * temporary routing loops / TTL code bug / ghost entries in originator table fixed
@@ -284,13 +284,13 @@ batman-adv 0.2:
 * major linux coding style adjustments applied
 * all kernel version compatibility functions has been moved to compat.h
 * use random ethernet address generator from the kernel
-* /sys/module/batman_adv/version to export kernel module version
+* /sys/module/batman_adv14/version to export kernel module version
 * vis: secondary interface export for dot draw format + JSON output format added
 * many bugs (alignment issues, race conditions, deadlocks, etc) squashed
 
  -- Sat, 07 Nov 2009 15:44:31 +0100
 
-batman-adv 0.1:
+batman-adv14 0.1:
 
 * support latest kernels (2.6.20 - 2.6.28)
 * LOTS of cleanup: locking, stack usage, memory leaks
@@ -300,12 +300,12 @@ batman-adv 0.1:
 
  -- Sun, 28 Dec 2008 00:44:31 +0100
 
-batman-adv 0.1-beta:
+batman-adv14 0.1-beta:
 
 * layer 2 meshing based on BATMAN TQ algorithm in kernelland
 * operates on any ethernet like interface
 * supports IPv4, IPv6, DHCP, etc
-* is controlled via /proc/net/batman-adv/
+* is controlled via /proc/net/batman-adv14/
 * bridging via brctl is supported
 * interface watchdog (interfaces can be (de)activated dynamically)
 * offers integrated vis server which meshes/syncs with other vis servers in range

@@ -17,42 +17,42 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_ROUTING_H_
-#define _NET_BATMAN_ADV_ROUTING_H_
+#ifndef _NET_BATMAN_ADV14_ROUTING_H_
+#define _NET_BATMAN_ADV14_ROUTING_H_
 
-bool batadv_check_management_packet(struct sk_buff *skb,
-				    struct batadv_hard_iface *hard_iface,
+bool batadv14_check_management_packet(struct sk_buff *skb,
+				    struct batadv14_hard_iface *hard_iface,
 				    int header_len);
-void batadv_update_route(struct batadv_priv *bat_priv,
-			 struct batadv_orig_node *orig_node,
-			 struct batadv_neigh_node *neigh_node);
-int batadv_recv_icmp_packet(struct sk_buff *skb,
-			    struct batadv_hard_iface *recv_if);
-int batadv_recv_unicast_packet(struct sk_buff *skb,
-			       struct batadv_hard_iface *recv_if);
-int batadv_recv_ucast_frag_packet(struct sk_buff *skb,
-				  struct batadv_hard_iface *recv_if);
-int batadv_recv_bcast_packet(struct sk_buff *skb,
-			     struct batadv_hard_iface *recv_if);
-int batadv_recv_vis_packet(struct sk_buff *skb,
-			   struct batadv_hard_iface *recv_if);
-int batadv_recv_tt_query(struct sk_buff *skb,
-			 struct batadv_hard_iface *recv_if);
-int batadv_recv_roam_adv(struct sk_buff *skb,
-			 struct batadv_hard_iface *recv_if);
-struct batadv_neigh_node *
-batadv_find_router(struct batadv_priv *bat_priv,
-		   struct batadv_orig_node *orig_node,
-		   const struct batadv_hard_iface *recv_if);
-void batadv_bonding_candidate_del(struct batadv_orig_node *orig_node,
-				  struct batadv_neigh_node *neigh_node);
-void batadv_bonding_candidate_add(struct batadv_orig_node *orig_node,
-				  struct batadv_neigh_node *neigh_node);
-void batadv_bonding_save_primary(const struct batadv_orig_node *orig_node,
-				 struct batadv_orig_node *orig_neigh_node,
-				 const struct batadv_ogm_packet
+void batadv14_update_route(struct batadv14_priv *bat_priv,
+			 struct batadv14_orig_node *orig_node,
+			 struct batadv14_neigh_node *neigh_node);
+int batadv14_recv_icmp_packet(struct sk_buff *skb,
+			    struct batadv14_hard_iface *recv_if);
+int batadv14_recv_unicast_packet(struct sk_buff *skb,
+			       struct batadv14_hard_iface *recv_if);
+int batadv14_recv_ucast_frag_packet(struct sk_buff *skb,
+				  struct batadv14_hard_iface *recv_if);
+int batadv14_recv_bcast_packet(struct sk_buff *skb,
+			     struct batadv14_hard_iface *recv_if);
+int batadv14_recv_vis_packet(struct sk_buff *skb,
+			   struct batadv14_hard_iface *recv_if);
+int batadv14_recv_tt_query(struct sk_buff *skb,
+			 struct batadv14_hard_iface *recv_if);
+int batadv14_recv_roam_adv(struct sk_buff *skb,
+			 struct batadv14_hard_iface *recv_if);
+struct batadv14_neigh_node *
+batadv14_find_router(struct batadv14_priv *bat_priv,
+		   struct batadv14_orig_node *orig_node,
+		   const struct batadv14_hard_iface *recv_if);
+void batadv14_bonding_candidate_del(struct batadv14_orig_node *orig_node,
+				  struct batadv14_neigh_node *neigh_node);
+void batadv14_bonding_candidate_add(struct batadv14_orig_node *orig_node,
+				  struct batadv14_neigh_node *neigh_node);
+void batadv14_bonding_save_primary(const struct batadv14_orig_node *orig_node,
+				 struct batadv14_orig_node *orig_neigh_node,
+				 const struct batadv14_ogm_packet
 				 *batman_ogm_packet);
-int batadv_window_protected(struct batadv_priv *bat_priv, int32_t seq_num_diff,
+int batadv14_window_protected(struct batadv14_priv *bat_priv, int32_t seq_num_diff,
 			    unsigned long *last_reset);
 
-#endif /* _NET_BATMAN_ADV_ROUTING_H_ */
+#endif /* _NET_BATMAN_ADV14_ROUTING_H_ */

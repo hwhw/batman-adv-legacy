@@ -27,59 +27,59 @@
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 0, 0)
 
-void batadv_free_rcu_gw_node(struct rcu_head *rcu)
+void batadv14_free_rcu_gw_node(struct rcu_head *rcu)
 {
-	struct batadv_gw_node *gw_node;
+	struct batadv14_gw_node *gw_node;
 
-	gw_node = container_of(rcu, struct batadv_gw_node, rcu);
+	gw_node = container_of(rcu, struct batadv14_gw_node, rcu);
 	kfree(gw_node);
 }
 
-void batadv_free_rcu_neigh_node(struct rcu_head *rcu)
+void batadv14_free_rcu_neigh_node(struct rcu_head *rcu)
 {
-	struct batadv_neigh_node *neigh_node;
+	struct batadv14_neigh_node *neigh_node;
 
-	neigh_node = container_of(rcu, struct batadv_neigh_node, rcu);
+	neigh_node = container_of(rcu, struct batadv14_neigh_node, rcu);
 	kfree(neigh_node);
 }
 
-void batadv_free_rcu_tt_local_entry(struct rcu_head *rcu)
+void batadv14_free_rcu_tt_local_entry(struct rcu_head *rcu)
 {
-	struct batadv_tt_common_entry *tt_common_entry;
-	struct batadv_tt_local_entry *tt_local_entry;
+	struct batadv14_tt_common_entry *tt_common_entry;
+	struct batadv14_tt_local_entry *tt_local_entry;
 
-	tt_common_entry = container_of(rcu, struct batadv_tt_common_entry, rcu);
+	tt_common_entry = container_of(rcu, struct batadv14_tt_common_entry, rcu);
 	tt_local_entry = container_of(tt_common_entry,
-				      struct batadv_tt_local_entry, common);
+				      struct batadv14_tt_local_entry, common);
 	kfree(tt_local_entry);
 }
 
-#ifdef CONFIG_BATMAN_ADV_BLA
-void batadv_free_rcu_backbone_gw(struct rcu_head *rcu)
+#ifdef CONFIG_BATMAN_ADV14_BLA
+void batadv14_free_rcu_backbone_gw(struct rcu_head *rcu)
 {
-	struct batadv_bla_backbone_gw *backbone_gw;
+	struct batadv14_bla_backbone_gw *backbone_gw;
 
-	backbone_gw = container_of(rcu, struct batadv_bla_backbone_gw, rcu);
+	backbone_gw = container_of(rcu, struct batadv14_bla_backbone_gw, rcu);
 	kfree(backbone_gw);
 }
 #endif
 
-#ifdef CONFIG_BATMAN_ADV_DAT
-void batadv_free_rcu_dat_entry(struct rcu_head *rcu)
+#ifdef CONFIG_BATMAN_ADV14_DAT
+void batadv14_free_rcu_dat_entry(struct rcu_head *rcu)
 {
-	struct batadv_dat_entry *dat_entry;
+	struct batadv14_dat_entry *dat_entry;
 
-	dat_entry = container_of(rcu, struct batadv_dat_entry, rcu);
+	dat_entry = container_of(rcu, struct batadv14_dat_entry, rcu);
 	kfree(dat_entry);
 }
 #endif
 
-#ifdef CONFIG_BATMAN_ADV_NC
-void batadv_free_rcu_nc_path(struct rcu_head *rcu)
+#ifdef CONFIG_BATMAN_ADV14_NC
+void batadv14_free_rcu_nc_path(struct rcu_head *rcu)
 {
-	struct batadv_nc_path *nc_path;
+	struct batadv14_nc_path *nc_path;
 
-	nc_path = container_of(rcu, struct batadv_nc_path, rcu);
+	nc_path = container_of(rcu, struct batadv14_nc_path, rcu);
 	kfree(nc_path);
 }
 #endif

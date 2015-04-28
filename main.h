@@ -17,13 +17,13 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_MAIN_H_
-#define _NET_BATMAN_ADV_MAIN_H_
+#ifndef _NET_BATMAN_ADV14_MAIN_H_
+#define _NET_BATMAN_ADV14_MAIN_H_
 
 #define BATADV_DRIVER_AUTHOR "Marek Lindner <lindner_marek@yahoo.de>, " \
 			     "Simon Wunderlich <siwu@hrz.tu-chemnitz.de>"
 #define BATADV_DRIVER_DESC   "B.A.T.M.A.N. advanced"
-#define BATADV_DRIVER_DEVICE "batman-adv"
+#define BATADV_DRIVER_DEVICE "batman-adv14"
 
 #ifndef BATADV_SOURCE_VERSION
 #define BATADV_SOURCE_VERSION "2013.4.0"
@@ -110,7 +110,7 @@
 
 #define BATADV_NC_NODE_TIMEOUT 10000 /* Milliseconds */
 
-enum batadv_mesh_state {
+enum batadv14_mesh_state {
 	BATADV_MESH_INACTIVE,
 	BATADV_MESH_ACTIVE,
 	BATADV_MESH_DEACTIVATING,
@@ -119,13 +119,13 @@ enum batadv_mesh_state {
 #define BATADV_BCAST_QUEUE_LEN		256
 #define BATADV_BATMAN_QUEUE_LEN	256
 
-enum batadv_uev_action {
+enum batadv14_uev_action {
 	BATADV_UEV_ADD = 0,
 	BATADV_UEV_DEL,
 	BATADV_UEV_CHANGE,
 };
 
-enum batadv_uev_type {
+enum batadv14_uev_type {
 	BATADV_UEV_GW = 0,
 };
 
@@ -138,7 +138,7 @@ enum batadv_uev_type {
 #ifdef pr_fmt
 #undef pr_fmt
 #endif
-/* Append 'batman-adv: ' before kernel messages */
+/* Append 'batman-adv14: ' before kernel messages */
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 /* Kernel headers */
@@ -163,42 +163,42 @@ enum batadv_uev_type {
 #include "types.h"
 
 /**
- * batadv_vlan_flags - flags for the four MSB of any vlan ID field
+ * batadv14_vlan_flags - flags for the four MSB of any vlan ID field
  * @BATADV_VLAN_HAS_TAG: whether the field contains a valid vlan tag or not
  */
-enum batadv_vlan_flags {
+enum batadv14_vlan_flags {
 	BATADV_VLAN_HAS_TAG	= BIT(15),
 };
 
 #define BATADV_PRINT_VID(vid) (vid & BATADV_VLAN_HAS_TAG ? \
 			       (int)(vid & VLAN_VID_MASK) : -1)
 
-extern char batadv_routing_algo[];
-extern struct list_head batadv_hardif_list;
+extern char batadv14_routing_algo[];
+extern struct list_head batadv14_hardif_list;
 
-extern unsigned char batadv_broadcast_addr[];
-extern struct workqueue_struct *batadv_event_workqueue;
+extern unsigned char batadv14_broadcast_addr[];
+extern struct workqueue_struct *batadv14_event_workqueue;
 
-int batadv_mesh_init(struct net_device *soft_iface);
-void batadv_mesh_free(struct net_device *soft_iface);
-int batadv_is_my_mac(struct batadv_priv *bat_priv, const uint8_t *addr);
-struct batadv_hard_iface *
-batadv_seq_print_text_primary_if_get(struct seq_file *seq);
-int batadv_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
+int batadv14_mesh_init(struct net_device *soft_iface);
+void batadv14_mesh_free(struct net_device *soft_iface);
+int batadv14_is_my_mac(struct batadv14_priv *bat_priv, const uint8_t *addr);
+struct batadv14_hard_iface *
+batadv14_seq_print_text_primary_if_get(struct seq_file *seq);
+int batadv14_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
 			   struct packet_type *ptype,
 			   struct net_device *orig_dev);
 int
-batadv_recv_handler_register(uint8_t packet_type,
+batadv14_recv_handler_register(uint8_t packet_type,
 			     int (*recv_handler)(struct sk_buff *,
-						 struct batadv_hard_iface *));
-void batadv_recv_handler_unregister(uint8_t packet_type);
-int batadv_algo_register(struct batadv_algo_ops *bat_algo_ops);
-int batadv_algo_select(struct batadv_priv *bat_priv, char *name);
-int batadv_algo_seq_print_text(struct seq_file *seq, void *offset);
-__be32 batadv_skb_crc32(struct sk_buff *skb, u8 *payload_ptr);
+						 struct batadv14_hard_iface *));
+void batadv14_recv_handler_unregister(uint8_t packet_type);
+int batadv14_algo_register(struct batadv14_algo_ops *bat_algo_ops);
+int batadv14_algo_select(struct batadv14_priv *bat_priv, char *name);
+int batadv14_algo_seq_print_text(struct seq_file *seq, void *offset);
+__be32 batadv14_skb_crc32(struct sk_buff *skb, u8 *payload_ptr);
 
 /**
- * enum batadv_dbg_level - available log levels
+ * enum batadv14_dbg_level - available log levels
  * @BATADV_DBG_BATMAN: OGM and TQ computations related messages
  * @BATADV_DBG_ROUTES: route added / changed / deleted
  * @BATADV_DBG_TT: translation table messages
@@ -207,7 +207,7 @@ __be32 batadv_skb_crc32(struct sk_buff *skb, u8 *payload_ptr);
  * @BATADV_DBG_NC: network coding related messages
  * @BATADV_DBG_ALL: the union of all the above log levels
  */
-enum batadv_dbg_level {
+enum batadv14_dbg_level {
 	BATADV_DBG_BATMAN = BIT(0),
 	BATADV_DBG_ROUTES = BIT(1),
 	BATADV_DBG_TT	  = BIT(2),
@@ -217,45 +217,45 @@ enum batadv_dbg_level {
 	BATADV_DBG_ALL    = 63,
 };
 
-#ifdef CONFIG_BATMAN_ADV_DEBUG
-int batadv_debug_log(struct batadv_priv *bat_priv, const char *fmt, ...)
+#ifdef CONFIG_BATMAN_ADV14_DEBUG
+int batadv14_debug_log(struct batadv14_priv *bat_priv, const char *fmt, ...)
 __printf(2, 3);
 
 /* possibly ratelimited debug output */
-#define _batadv_dbg(type, bat_priv, ratelimited, fmt, arg...)			\
+#define _batadv14_dbg(type, bat_priv, ratelimited, fmt, arg...)			\
 	do {							\
 		if (atomic_read(&bat_priv->log_level) & type && \
 		    (!ratelimited || net_ratelimit()))	\
-			batadv_debug_log(bat_priv, fmt, ## arg);\
+			batadv14_debug_log(bat_priv, fmt, ## arg);\
 	}							\
 	while (0)
-#else /* !CONFIG_BATMAN_ADV_DEBUG */
+#else /* !CONFIG_BATMAN_ADV14_DEBUG */
 __printf(4, 5)
-static inline void _batadv_dbg(int type __always_unused,
-			      struct batadv_priv *bat_priv __always_unused,
+static inline void _batadv14_dbg(int type __always_unused,
+			      struct batadv14_priv *bat_priv __always_unused,
 			      int ratelimited __always_unused,
 			      const char *fmt __always_unused, ...)
 {
 }
 #endif
 
-#define batadv_dbg(type, bat_priv, arg...) \
-	_batadv_dbg(type, bat_priv, 0, ## arg)
-#define batadv_dbg_ratelimited(type, bat_priv, arg...) \
-	_batadv_dbg(type, bat_priv, 1, ## arg)
+#define batadv14_dbg(type, bat_priv, arg...) \
+	_batadv14_dbg(type, bat_priv, 0, ## arg)
+#define batadv14_dbg_ratelimited(type, bat_priv, arg...) \
+	_batadv14_dbg(type, bat_priv, 1, ## arg)
 
-#define batadv_info(net_dev, fmt, arg...)				\
+#define batadv14_info(net_dev, fmt, arg...)				\
 	do {								\
 		struct net_device *_netdev = (net_dev);                 \
-		struct batadv_priv *_batpriv = netdev_priv(_netdev);    \
-		batadv_dbg(BATADV_DBG_ALL, _batpriv, fmt, ## arg);	\
+		struct batadv14_priv *_batpriv = netdev_priv(_netdev);    \
+		batadv14_dbg(BATADV_DBG_ALL, _batpriv, fmt, ## arg);	\
 		pr_info("%s: " fmt, _netdev->name, ## arg);		\
 	} while (0)
-#define batadv_err(net_dev, fmt, arg...)				\
+#define batadv14_err(net_dev, fmt, arg...)				\
 	do {								\
 		struct net_device *_netdev = (net_dev);                 \
-		struct batadv_priv *_batpriv = netdev_priv(_netdev);    \
-		batadv_dbg(BATADV_DBG_ALL, _batpriv, fmt, ## arg);	\
+		struct batadv14_priv *_batpriv = netdev_priv(_netdev);    \
+		batadv14_dbg(BATADV_DBG_ALL, _batpriv, fmt, ## arg);	\
 		pr_err("%s: " fmt, _netdev->name, ## arg);		\
 	} while (0)
 
@@ -263,7 +263,7 @@ static inline void _batadv_dbg(int type __always_unused,
  *
  * note: can't use compare_ether_addr() as it requires aligned memory
  */
-static inline int batadv_compare_eth(const void *data1, const void *data2)
+static inline int batadv14_compare_eth(const void *data1, const void *data2)
 {
 	return (memcmp(data1, data2, ETH_ALEN) == 0 ? 1 : 0);
 }
@@ -275,16 +275,16 @@ static inline int batadv_compare_eth(const void *data1, const void *data2)
  *
  * Returns true if current time is after timestamp + timeout
  */
-static inline bool batadv_has_timed_out(unsigned long timestamp,
+static inline bool batadv14_has_timed_out(unsigned long timestamp,
 					unsigned int timeout)
 {
 	return time_is_before_jiffies(timestamp + msecs_to_jiffies(timeout));
 }
 
-#define batadv_atomic_dec_not_zero(v)	atomic_add_unless((v), -1, 0)
+#define batadv14_atomic_dec_not_zero(v)	atomic_add_unless((v), -1, 0)
 
 /* Returns the smallest signed integer in two's complement with the sizeof x */
-#define batadv_smallest_signed_int(x) (1u << (7u + 8u * (sizeof(x) - 1u)))
+#define batadv14_smallest_signed_int(x) (1u << (7u + 8u * (sizeof(x) - 1u)))
 
 /* Checks if a sequence number x is a predecessor/successor of y.
  * they handle overflows/underflows and can correctly check for a
@@ -296,24 +296,24 @@ static inline bool batadv_has_timed_out(unsigned long timestamp,
  *  - when adding 128 - it is neither a predecessor nor a successor,
  *  - after adding more than 127 to the starting value - it is a successor
  */
-#define batadv_seq_before(x, y) ({typeof(x) _d1 = (x); \
+#define batadv14_seq_before(x, y) ({typeof(x) _d1 = (x); \
 				 typeof(y) _d2 = (y); \
 				 typeof(x) _dummy = (_d1 - _d2); \
 				 (void) (&_d1 == &_d2); \
-				 _dummy > batadv_smallest_signed_int(_dummy); })
-#define batadv_seq_after(x, y) batadv_seq_before(y, x)
+				 _dummy > batadv14_smallest_signed_int(_dummy); })
+#define batadv14_seq_after(x, y) batadv14_seq_before(y, x)
 
 /* Stop preemption on local cpu while incrementing the counter */
-static inline void batadv_add_counter(struct batadv_priv *bat_priv, size_t idx,
+static inline void batadv14_add_counter(struct batadv14_priv *bat_priv, size_t idx,
 				      size_t count)
 {
 	this_cpu_add(bat_priv->bat_counters[idx], count);
 }
 
-#define batadv_inc_counter(b, i) batadv_add_counter(b, i, 1)
+#define batadv14_inc_counter(b, i) batadv14_add_counter(b, i, 1)
 
 /* Sum and return the cpu-local counters for index 'idx' */
-static inline uint64_t batadv_sum_counter(struct batadv_priv *bat_priv,
+static inline uint64_t batadv14_sum_counter(struct batadv14_priv *bat_priv,
 					  size_t idx)
 {
 	uint64_t *counters, sum = 0;
@@ -328,9 +328,9 @@ static inline uint64_t batadv_sum_counter(struct batadv_priv *bat_priv,
 }
 
 /* Define a macro to reach the control buffer of the skb. The members of the
- * control buffer are defined in struct batadv_skb_cb in types.h.
+ * control buffer are defined in struct batadv14_skb_cb in types.h.
  * The macro is inspired by the similar macro TCP_SKB_CB() in tcp.h.
  */
-#define BATADV_SKB_CB(__skb)       ((struct batadv_skb_cb *)&((__skb)->cb[0]))
+#define BATADV_SKB_CB(__skb)       ((struct batadv14_skb_cb *)&((__skb)->cb[0]))
 
-#endif /* _NET_BATMAN_ADV_MAIN_H_ */
+#endif /* _NET_BATMAN_ADV14_MAIN_H_ */

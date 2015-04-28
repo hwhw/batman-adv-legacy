@@ -21,8 +21,8 @@
  * of the Linux kernel.
  */
 
-#ifndef _NET_BATMAN_ADV_COMPAT_H_
-#define _NET_BATMAN_ADV_COMPAT_H_
+#ifndef _NET_BATMAN_ADV14_COMPAT_H_
+#define _NET_BATMAN_ADV14_COMPAT_H_
 
 #include <linux/version.h>	/* LINUX_VERSION_CODE */
 
@@ -62,16 +62,16 @@
 
 #define skb_iif iif
 
-#define this_cpu_add(x, c)	batadv_this_cpu_add(&(x), c)
+#define this_cpu_add(x, c)	batadv14_this_cpu_add(&(x), c)
 
-static inline void batadv_this_cpu_add(uint64_t *count_ptr, size_t count)
+static inline void batadv14_this_cpu_add(uint64_t *count_ptr, size_t count)
 {
 	int cpu = get_cpu();
 	*per_cpu_ptr(count_ptr, cpu) += count;
 	put_cpu();
 }
 
-#define batadv_softif_destroy_netlink(dev, head) batadv_softif_destroy_netlink(dev)
+#define batadv14_softif_destroy_netlink(dev, head) batadv14_softif_destroy_netlink(dev)
 #define unregister_netdevice_queue(dev, head) unregister_netdevice(dev)
 
 static inline struct sk_buff *netdev_alloc_skb_ip_align(struct net_device *dev,
@@ -132,12 +132,12 @@ struct kernel_param_ops {
 				    __compat_get_param_##name, arg,	\
 				    __same_type((arg), bool *), perm)
 
-static inline int batadv_param_set_copystring(const char *val,
+static inline int batadv14_param_set_copystring(const char *val,
 					      const struct kernel_param *kp)
 {
 	return param_set_copystring(val, (struct kernel_param *)kp);
 }
-#define param_set_copystring batadv_param_set_copystring
+#define param_set_copystring batadv14_param_set_copystring
 
 /* hack for dev->addr_assign_type &= ~NET_ADDR_RANDOM; */
 #define addr_assign_type ifindex
@@ -179,15 +179,15 @@ static const struct { \
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 0, 0)
 
-#define kfree_rcu(ptr, rcu_head) call_rcu(&ptr->rcu_head, batadv_free_rcu_##ptr)
+#define kfree_rcu(ptr, rcu_head) call_rcu(&ptr->rcu_head, batadv14_free_rcu_##ptr)
 #define vlan_insert_tag(skb, proto, vid) __vlan_put_tag(skb, vid)
 
-void batadv_free_rcu_gw_node(struct rcu_head *rcu);
-void batadv_free_rcu_neigh_node(struct rcu_head *rcu);
-void batadv_free_rcu_tt_local_entry(struct rcu_head *rcu);
-void batadv_free_rcu_backbone_gw(struct rcu_head *rcu);
-void batadv_free_rcu_dat_entry(struct rcu_head *rcu);
-void batadv_free_rcu_nc_path(struct rcu_head *rcu);
+void batadv14_free_rcu_gw_node(struct rcu_head *rcu);
+void batadv14_free_rcu_neigh_node(struct rcu_head *rcu);
+void batadv14_free_rcu_tt_local_entry(struct rcu_head *rcu);
+void batadv14_free_rcu_backbone_gw(struct rcu_head *rcu);
+void batadv14_free_rcu_dat_entry(struct rcu_head *rcu);
+void batadv14_free_rcu_nc_path(struct rcu_head *rcu);
 
 static inline void skb_reset_mac_len(struct sk_buff *skb)
 {
@@ -199,9 +199,9 @@ static inline void skb_reset_mac_len(struct sk_buff *skb)
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 4, 0)
 
-#define eth_hw_addr_random(dev)	batadv_eth_hw_addr_random(dev)
+#define eth_hw_addr_random(dev)	batadv14_eth_hw_addr_random(dev)
 
-static inline void batadv_eth_hw_addr_random(struct net_device *dev)
+static inline void batadv14_eth_hw_addr_random(struct net_device *dev)
 {
 	random_ether_addr(dev->dev_addr);
 }
@@ -225,7 +225,7 @@ static inline void batadv_eth_hw_addr_random(struct net_device *dev)
 #define ETH_P_BATMAN	0x4305
 
 /* hack for not correctly set mac_len. This may happen for some special
- * configurations like batman-adv on VLANs.
+ * configurations like batman-adv14 on VLANs.
  *
  * This is pretty dirty, but we only use skb_share_check() in main.c right
  * before mac_len is checked, and the recomputation shouldn't hurt too much.
@@ -245,18 +245,18 @@ static inline void batadv_eth_hw_addr_random(struct net_device *dev)
 
 #define prandom_u32() random32()
 
-#define batadv_interface_set_mac_addr(x, y) \
-__batadv_interface_set_mac_addr(struct net_device *dev, void *p);\
-static int batadv_interface_set_mac_addr(struct net_device *dev, void *p) \
+#define batadv14_interface_set_mac_addr(x, y) \
+__batadv14_interface_set_mac_addr(struct net_device *dev, void *p);\
+static int batadv14_interface_set_mac_addr(struct net_device *dev, void *p) \
 {\
 	int ret;\
 \
-	ret = __batadv_interface_set_mac_addr(dev, p);\
+	ret = __batadv14_interface_set_mac_addr(dev, p);\
 	if (!ret) \
 		dev->addr_assign_type &= ~NET_ADDR_RANDOM;\
 	return ret;\
 }\
-static int __batadv_interface_set_mac_addr(x, y)
+static int __batadv14_interface_set_mac_addr(x, y)
 
 #define netdev_master_upper_dev_link netdev_set_master
 #define netdev_upper_dev_unlink(slave, master) netdev_set_master(slave, NULL)
@@ -343,4 +343,4 @@ static inline bool seq_has_overflowed(struct seq_file *m)
 
 #endif /* < KERNEL_VERSION(3, 19, 0) */
 
-#endif /* _NET_BATMAN_ADV_COMPAT_H_ */
+#endif /* _NET_BATMAN_ADV14_COMPAT_H_ */

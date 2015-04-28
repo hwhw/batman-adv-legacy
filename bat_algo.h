@@ -17,9 +17,9 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_BAT_ALGO_H_
-#define _NET_BATMAN_ADV_BAT_ALGO_H_
+#ifndef _NET_BATMAN_ADV14_BAT_ALGO_H_
+#define _NET_BATMAN_ADV14_BAT_ALGO_H_
 
-int batadv_iv_init(void);
+int batadv14_iv_init(void);
 
-#endif /* _NET_BATMAN_ADV_BAT_ALGO_H_ */
+#endif /* _NET_BATMAN_ADV14_BAT_ALGO_H_ */

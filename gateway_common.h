@@ -17,10 +17,10 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_GATEWAY_COMMON_H_
-#define _NET_BATMAN_ADV_GATEWAY_COMMON_H_
+#ifndef _NET_BATMAN_ADV14_GATEWAY_COMMON_H_
+#define _NET_BATMAN_ADV14_GATEWAY_COMMON_H_
 
-enum batadv_gw_modes {
+enum batadv14_gw_modes {
 	BATADV_GW_MODE_OFF,
 	BATADV_GW_MODE_CLIENT,
 	BATADV_GW_MODE_SERVER,
@@ -30,8 +30,8 @@ enum batadv_gw_modes {
 #define BATADV_GW_MODE_CLIENT_NAME	"client"
 #define BATADV_GW_MODE_SERVER_NAME	"server"
 
-void batadv_gw_bandwidth_to_kbit(uint8_t gw_class, int *down, int *up);
-ssize_t batadv_gw_bandwidth_set(struct net_device *net_dev, char *buff,
+void batadv14_gw_bandwidth_to_kbit(uint8_t gw_class, int *down, int *up);
+ssize_t batadv14_gw_bandwidth_set(struct net_device *net_dev, char *buff,
 				size_t count);
 
-#endif /* _NET_BATMAN_ADV_GATEWAY_COMMON_H_ */
+#endif /* _NET_BATMAN_ADV14_GATEWAY_COMMON_H_ */

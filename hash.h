@@ -17,46 +17,46 @@
  * 02110-1301, USA
  */
 
-#ifndef _NET_BATMAN_ADV_HASH_H_
-#define _NET_BATMAN_ADV_HASH_H_
+#ifndef _NET_BATMAN_ADV14_HASH_H_
+#define _NET_BATMAN_ADV14_HASH_H_
 
 #include <linux/list.h>
 
 /* callback to a compare function.  should compare 2 element datas for their
  * keys, return 0 if same and not 0 if not same
  */
-typedef int (*batadv_hashdata_compare_cb)(const struct hlist_node *,
+typedef int (*batadv14_hashdata_compare_cb)(const struct hlist_node *,
 					  const void *);
 
 /* the hashfunction, should return an index
  * based on the key in the data of the first
  * argument and the size the second
  */
-typedef uint32_t (*batadv_hashdata_choose_cb)(const void *, uint32_t);
-typedef void (*batadv_hashdata_free_cb)(struct hlist_node *, void *);
+typedef uint32_t (*batadv14_hashdata_choose_cb)(const void *, uint32_t);
+typedef void (*batadv14_hashdata_free_cb)(struct hlist_node *, void *);
 
-struct batadv_hashtable {
+struct batadv14_hashtable {
 	struct hlist_head *table;   /* the hashtable itself with the buckets */
 	spinlock_t *list_locks;     /* spinlock for each hash list entry */
 	uint32_t size;		    /* size of hashtable */
 };
 
 /* allocates and clears the hash */
-struct batadv_hashtable *batadv_hash_new(uint32_t size);
+struct batadv14_hashtable *batadv14_hash_new(uint32_t size);
 
 /* set class key for all locks */
-void batadv_hash_set_lock_class(struct batadv_hashtable *hash,
+void batadv14_hash_set_lock_class(struct batadv14_hashtable *hash,
 				struct lock_class_key *key);
 
 /* free only the hashtable and the hash itself. */
-void batadv_hash_destroy(struct batadv_hashtable *hash);
+void batadv14_hash_destroy(struct batadv14_hashtable *hash);
 
 /* remove the hash structure. if hashdata_free_cb != NULL, this function will be
  * called to remove the elements inside of the hash.  if you don't remove the
  * elements, memory might be leaked.
  */
-static inline void batadv_hash_delete(struct batadv_hashtable *hash,
-				      batadv_hashdata_free_cb free_cb,
+static inline void batadv14_hash_delete(struct batadv14_hashtable *hash,
+				      batadv14_hashdata_free_cb free_cb,
 				      void *arg)
 {
 	struct hlist_head *head;
@@ -78,18 +78,18 @@ static inline void batadv_hash_delete(struct batadv_hashtable *hash,
 		spin_unlock_bh(list_lock);
 	}
 
-	batadv_hash_destroy(hash);
+	batadv14_hash_destroy(hash);
 }
 
 /**
- *	batadv_hash_bytes - hash some bytes and add them to the previous hash
+ *	batadv14_hash_bytes - hash some bytes and add them to the previous hash
  *	@hash: previous hash value
  *	@data: data to be hashed
  *	@size: number of bytes to be hashed
  *
  *	Returns the new hash value.
  */
-static inline uint32_t batadv_hash_bytes(uint32_t hash, const void *data,
+static inline uint32_t batadv14_hash_bytes(uint32_t hash, const void *data,
 					 uint32_t size)
 {
 	const unsigned char *key = data;
@@ -104,7 +104,7 @@ static inline uint32_t batadv_hash_bytes(uint32_t hash, const void *data,
 }
 
 /**
- *	batadv_hash_add - adds data to the hashtable
+ *	batadv14_hash_add - adds data to the hashtable
  *	@hash: storage hash table
  *	@compare: callback to determine if 2 hash elements are identical
  *	@choose: callback calculating the hash index
@@ -114,9 +114,9 @@ static inline uint32_t batadv_hash_bytes(uint32_t hash, const void *data,
  *	Returns 0 on success, 1 if the element already is in the hash
  *	and -1 on error.
  */
-static inline int batadv_hash_add(struct batadv_hashtable *hash,
-				  batadv_hashdata_compare_cb compare,
-				  batadv_hashdata_choose_cb choose,
+static inline int batadv14_hash_add(struct batadv14_hashtable *hash,
+				  batadv14_hashdata_compare_cb compare,
+				  batadv14_hashdata_choose_cb choose,
 				  const void *data,
 				  struct hlist_node *data_node)
 {
@@ -159,9 +159,9 @@ out:
  * structure you use with just the key filled, we just need the key for
  * comparing.
  */
-static inline void *batadv_hash_remove(struct batadv_hashtable *hash,
-				       batadv_hashdata_compare_cb compare,
-				       batadv_hashdata_choose_cb choose,
+static inline void *batadv14_hash_remove(struct batadv14_hashtable *hash,
+				       batadv14_hashdata_compare_cb compare,
+				       batadv14_hashdata_choose_cb choose,
 				       void *data)
 {
 	uint32_t index;
@@ -186,4 +186,4 @@ static inline void *batadv_hash_remove(struct batadv_hashtable *hash,
 	return data_save;
 }
 
-#endif /* _NET_BATMAN_ADV_HASH_H_ */
+#endif /* _NET_BATMAN_ADV14_HASH_H_ */

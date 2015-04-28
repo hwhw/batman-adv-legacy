@@ -1,19 +1,19 @@
 
-What:           /sys/class/net/<iface>/batman-adv/iface_status
+What:           /sys/class/net/<iface>/batman-adv14/iface_status
 Date:           May 2010
 Contact:        Marek Lindner <lindner_marek@yahoo.de>
 Description:
                 Indicates the status of <iface> as it is seen by batman.
 
-What:           /sys/class/net/<iface>/batman-adv/mesh_iface
+What:           /sys/class/net/<iface>/batman-adv14/mesh_iface
 Date:           May 2010
 Contact:        Marek Lindner <lindner_marek@yahoo.de>
 Description:
-                The /sys/class/net/<iface>/batman-adv/mesh_iface file
+                The /sys/class/net/<iface>/batman-adv14/mesh_iface file
                 displays the batman mesh interface this <iface>
                 currently is associated with.
 
-What:           /sys/class/net/<iface>/batman-adv/no_rebroadcast
+What:           /sys/class/net/<iface>/batman-adv14/no_rebroadcast
 Date:           Sep 2013
 Contact:        Linus Lüssing <linus.luessing@web.de>
 Description:

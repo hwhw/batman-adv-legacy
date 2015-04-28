@@ -1,10 +1,10 @@
-BATMAN-ADV external module
+BATMAN-ADV14 external module
 --------------------------
 
-The  batman-adv  module  is  shipped  as part of the Linux kernel
+The  batman-adv14  module  is  shipped  as part of the Linux kernel
 and as external module. The external  module   allows   to    get
 new    features without  upgrading  to  a  newer  kernel  version
-and to get batman-adv specific bugfixes  for  kernels  that   are
+and to get batman-adv14 specific bugfixes  for  kernels  that   are
 not   supported   anymore.  It compiles  against  and should work
 with Linux 2.6.29 -   3.12.  Supporting  older  versions  is  not
 planned,  but it's probably easy to backport it. If you work on a
@@ -35,14 +35,14 @@ option  can be set to to y (enabled), n (disabled) or m (build as
 module).  Available  options  and  their    possible   values are
 (default marked with an "*")
 
- * CONFIG_BATMAN_ADV_DEBUG=[y|n*] (B.A.T.M.A.N. debugging)
- * CONFIG_BATMAN_ADV_BLA=[y*|n] (B.A.T.M.A.N. bridge loop avoidance)
- * CONFIG_BATMAN_ADV_DAT=[y*|n] (B.A.T.M.A.N. Distributed ARP Table)
- * CONFIG_BATMAN_ADV_NC=[y|n*] (B.A.T.M.A.N. Network Coding)
+ * CONFIG_BATMAN_ADV14_DEBUG=[y|n*] (B.A.T.M.A.N. debugging)
+ * CONFIG_BATMAN_ADV14_BLA=[y*|n] (B.A.T.M.A.N. bridge loop avoidance)
+ * CONFIG_BATMAN_ADV14_DAT=[y*|n] (B.A.T.M.A.N. Distributed ARP Table)
+ * CONFIG_BATMAN_ADV14_NC=[y|n*] (B.A.T.M.A.N. Network Coding)
 
 e.g., debugging can be enabled by
 
-# make CONFIG_BATMAN_ADV_DEBUG=y
+# make CONFIG_BATMAN_ADV14_DEBUG=y
 
 Keep  in  mind  that  all  options  must  also  be added to "make
 install" call.
